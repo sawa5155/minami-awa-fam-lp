@@ -261,6 +261,19 @@
   track.addEventListener('touchstart', down, { passive: true });
   track.addEventListener('touchmove', moveDrag, { passive: false });
   track.addEventListener('touchend', up);
+
+  // ---- iOS Safari 対策（重要）----
+  // 実機 iPhone では、document 側にタッチリスナが無いと Safari が
+  // スクロールをコンポジタスレッドの「高速パス」で処理し、track の
+  // 非passive touchmove の preventDefault が効かず横スワイプが奪われる。
+  // document / capture 段階に（空でよいので）タッチリスナを張ると
+  // タッチ処理がメインスレッド経由になり、スワイプ移動が機能する。
+  // （実機で挙動確認済み。パネル無しでも効くよう本体へ移植）
+  var noop = function () {};
+  document.addEventListener('touchstart', noop, { capture: true, passive: true });
+  document.addEventListener('touchmove', noop, { capture: true, passive: true });
+  document.addEventListener('touchend', noop, { capture: true, passive: true });
+
   // ドラッグ直後のリンク誤クリックを抑止
   track.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
 

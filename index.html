@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Jost:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@500;600;700&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=20260722">
-<script src="js/main.js?v=20260722" defer></script>
+<script src="js/main.js?v=20260722b" defer></script>
 </head>
 <body>
 
@@ -355,6 +355,27 @@
     </div>
   </footer>
 </section>
+
+<!-- ===== 確認用ログ (一時的・確認後に削除します v=20260722b) ===== -->
+<div id="dbg" style="position:fixed;left:0;right:0;bottom:0;z-index:99999;background:rgba(0,0,0,.85);color:#0f0;font:12px/1.4 monospace;padding:6px;white-space:pre-wrap;">build v=20260722b 読込中…</div>
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+  var box=document.getElementById('dbg'), track=document.querySelector('.area__track');
+  if(!track){ box.textContent='❌ trackなし'; return; }
+  box.textContent='✅ build v=20260722b 読込OK / touch-action='+getComputedStyle(track).touchAction+'\nカードを横スワイプしてください';
+  var sx=0, ty0=0, sc0=0;
+  track.addEventListener('touchstart', function(e){
+    sx=e.touches[0].clientX;
+    ty0=new DOMMatrixReadOnly(getComputedStyle(track).transform).m41; sc0=window.pageYOffset;
+  }, {capture:true, passive:true});
+  track.addEventListener('touchend', function(){
+    var ty1=new DOMMatrixReadOnly(getComputedStyle(track).transform).m41;
+    var moved=Math.round(ty1-ty0), scrolled=Math.round(window.pageYOffset-sc0);
+    box.textContent='v=20260722b / スワイプ結果:\ntrack移動='+moved+'px  '+(Math.abs(moved)>5?'→ スライドOK':'→ 動いてない')+'\nページ縦スクロール='+scrolled+'px';
+  }, {capture:true, passive:true});
+});
+</script>
+<!-- ===== /確認用ログ ===== -->
 
 </body>
 </html>
