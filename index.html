@@ -356,5 +356,55 @@
   </footer>
 </section>
 
+<!-- ===== DEBUG PANEL (一時的・確認後に削除します) ===== -->
+<div id="dbg" style="position:fixed;left:0;right:0;bottom:0;z-index:99999;max-height:45vh;overflow:auto;background:rgba(0,0,0,.85);color:#0f0;font:12px/1.4 monospace;padding:8px;white-space:pre-wrap;">DEBUG: 読込中…</div>
+<script>
+(function () {
+  var box = document.getElementById('dbg');
+  var lines = [];
+  function log(s){ lines.push(s); if(lines.length>14) lines.shift(); box.textContent = lines.join('\n'); }
+
+  // 1) JSエラーを捕捉（main.js は defer なのでこの後に実行される＝ここで先に仕込める）
+  window.onerror = function(msg, src, ln, col){ log('❌ERROR: '+msg+' @'+(src||'').split('/').pop()+':'+ln); };
+
+  window.addEventListener('DOMContentLoaded', function(){
+    var track = document.querySelector('.area__track');
+    var vp = document.querySelector('.area__viewport');
+    if(!track){ log('❌ .area__track が見つからない'); return; }
+
+    var cs = getComputedStyle(track);
+    log('✅ track検出 / touch-action=' + cs.touchAction);
+    log('UA: ' + navigator.userAgent.replace(/^.*(OS \d+_\d+).*/,'$1') + ' / pointer=' + ('onpointerdown' in window));
+
+    var sX=0, sY=0, startScroll=0, mv=0;
+    // capture:true で、main.js のリスナーより先に確実に発火するか確認する
+    track.addEventListener('touchstart', function(e){
+      mv=0; startScroll=window.pageYOffset;
+      var t=e.touches[0]; sX=t.clientX; sY=t.clientY;
+      log('▶ touchstart x='+Math.round(sX)+' y='+Math.round(sY));
+    }, {capture:true, passive:true});
+
+    track.addEventListener('touchmove', function(e){
+      mv++;
+      if(mv<=3 || mv%5===0){
+        var t=e.touches[0];
+        log('  move#'+mv+' dx='+Math.round(t.clientX-sX)+' dy='+Math.round(t.clientY-sY)+' cancelable='+e.cancelable);
+      }
+    }, {capture:true, passive:true});
+
+    track.addEventListener('touchend', function(e){
+      var scrolled = window.pageYOffset - startScroll;
+      log('⏹ touchend moves='+mv+' pageScrolled='+Math.round(scrolled)+'px');
+    }, {capture:true, passive:true});
+
+    // track に届かず document には届くか（ヒットテスト問題の切り分け）
+    var docMv=0;
+    document.addEventListener('touchmove', function(){ docMv++; }, {capture:true, passive:true});
+    document.addEventListener('touchend', function(){ if(docMv>0 && mv===0) log('⚠ documentには'+docMv+'回のmoveが届いたがtrackには0回'); docMv=0; }, {capture:true, passive:true});
+  });
+})();
+</script>
+<!-- ===== /DEBUG PANEL ===== -->
+
 </body>
 </html>
