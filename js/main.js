@@ -222,9 +222,12 @@
   }
 
   // ドラッグ / スワイプ（増分方式で連続追従）
-  var dragging = false, lastX = 0, movedDist = 0, moved = false;
+  // dxTotal: 指の総移動量（符号付き）／ indexDown: ドラッグ開始時に中央だったカード
+  var dragging = false, lastX = 0, movedDist = 0, moved = false, dxTotal = 0, indexDown = 0;
+  var FLICK = 30; // これ以上の横移動は「フリック」とみなし1枚送る（半カード未満でもスライド）
   function down(e) {
-    dragging = true; movedDist = 0; moved = false;
+    dragging = true; movedDist = 0; moved = false; dxTotal = 0;
+    indexDown = nearestToCenter();
     lastX = (e.touches ? e.touches[0].clientX : e.clientX);
     track.style.transition = 'none';
   }
@@ -232,6 +235,7 @@
     if (!dragging) return;
     var x = (e.touches ? e.touches[0].clientX : e.clientX);
     var dx = x - lastX; lastX = x;
+    dxTotal += dx;
     movedDist += Math.abs(dx);
     if (movedDist > 3) moved = true;
     setTx(curTx + dx);
@@ -241,7 +245,15 @@
   function up() {
     if (!dragging) return;
     dragging = false;
-    snap();
+    var ni = nearestToCenter();
+    // 半カードに届かず中央カードが変わらなかった場合でも、
+    // ある程度の横フリックがあれば指の向きに1枚送る（＝ボタンと同じ挙動）
+    if (ni === indexDown && Math.abs(dxTotal) > FLICK) {
+      index = indexDown + (dxTotal < 0 ? 1 : -1); // 左スワイプ=次 / 右スワイプ=前
+      apply(txFor(index), true);
+    } else {
+      snap();
+    }
   }
   track.addEventListener('mousedown', down);
   window.addEventListener('mousemove', moveDrag);

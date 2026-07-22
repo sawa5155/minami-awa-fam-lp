@@ -1,0 +1,5 @@
+# macOS
+.DS_Store
+
+# 画像の元データ（バックアップ・アップロード不要）
+img_original/
