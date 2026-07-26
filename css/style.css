@@ -344,9 +344,13 @@ body {
 .hero__badge {
   position: absolute;
   z-index: 3;
-  top: 18.9rem;
-  right: 2.6rem;
-  height: 39.6rem;
+  top: 20.7rem;
+  right: 3.9rem;
+  width: 45.6rem;
+}
+.hero__badge picture {
+  display: block;
+  width: 100%;
 }
 .hero__badge-img {
   display: block;
@@ -792,7 +796,7 @@ body {
 }
 .join__photo img {
   width: 100%;
-  height: stretch;
+  height: 100%;
   object-fit: cover;
   border-radius: .4rem;
 }
@@ -1101,7 +1105,7 @@ body {
   .hero__info-row:nth-child(2) dd { font-size: 1.6rem; }
   .hero__info-row:nth-child(2) dd span { font-size: 1.3rem; }
   .hero__btn { margin-top: 2.2rem; height: 4rem; padding: 0 2.9rem; font-size: 1.3rem; }
-  .hero__badge { top: 24.2rem; right: 1.2rem; width: 14.8rem; height: auto; }
+  .hero__badge { top: 24.2rem; right: 1.2rem; width: 13.8rem; }
 
   /* ---------- ABOUT ---------- */
   /* モバイルでは背景画像をセクション全体ではなく上から約60%だけに表示する。
