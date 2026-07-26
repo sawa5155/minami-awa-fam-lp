@@ -40,11 +40,13 @@ html {
 }
 /* スマホ等の極小化を緩和 (最低スケールを確保) */
 @media screen and (max-width: 767px) {
-  html { font-size: calc(100vw / 76.8 * 1.5); } /* 実機で読める程度にやや拡大 */
+  html { font-size: calc(100vw / 38); } /* 380px幅で 1rem = 10px（PCと同方式） */
 }
 
 /* ---------- リセット ---------- */
 *, *::before, *::after { box-sizing: border-box; }
+/* モバイル専用の改行（PCでは無効化） */
+.sp-only { display: none; }
 body, h1, h2, h3, h4, p, ul, ol, li, dl, dt, dd, figure {
   margin: 0; padding: 0;
 }
@@ -158,7 +160,7 @@ body {
   background: var(--grad-btn);
   color: #fff;
   font-weight: bold;
-  letter-spacing: .08em;
+  letter-spacing: .2em;
   border-radius: .8rem;
   box-shadow: 0 .5rem 1.4rem rgba(30,158,162,.28);
   text-shadow: 0 0 .4rem rgba(0,0,0,.28);
@@ -200,7 +202,7 @@ body {
   color: var(--text);
   font-weight: bold;
   font-size: 3.5rem;
-  letter-spacing: .16em;
+  letter-spacing: .15em;
   margin-top: 3.1rem;
 }
 
@@ -235,9 +237,8 @@ body {
   padding: 0 3.6rem;
   font-size: 1.7rem;
 }
-/* ハンバーガー & モバイル用メニューCTA：PC では非表示（モバイルのみ表示） */
+/* ハンバーガー：PC では非表示（モバイルのみ表示） */
 .gnav__toggle { display: none; }
-.gnav__cta-item { display: none; }
 
 /* =========================================================
    HERO
@@ -274,6 +275,13 @@ body {
   background-clip: text;
   color: transparent;
   filter: drop-shadow(.15rem .15rem .03rem rgba(0,0,0,.3));
+}
+.hero__lead-em,
+.hero__lead-sub {
+  background: var(--grad-title);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .hero__title {
   width: fit-content;
@@ -361,9 +369,21 @@ body {
   position: relative;
   z-index: 2;
   padding: 0 7.7rem 0 15.4rem;
-  display: flex;
-  justify-content: space-between;
 }
+/* テキスト列(1fr)＋マップ(右)の2カラム。map は DOM 上 title 直後にあるので
+   grid-row: 1 / -1 で右側に全高で配置し、デスクトップの横並びを再現する */
+.about__lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 61.3rem;
+  /* 左カラムの要素数ぶん(title/text×3/list=5)＋余裕。空行は auto で 0 高さ。
+     明示的な行を作ることで map の grid-row: 1 / -1 が全高スパンできる */
+  grid-template-rows: repeat(8, auto);
+  column-gap: 4rem;
+  align-items: start;
+}
+.about__title,
+.about__text,
+.about__list { grid-column: 1; }
 .about__title {
   color: var(--navy);
   font-size: 4.4rem;
@@ -396,6 +416,7 @@ body {
   padding-left: 2rem;
   margin-bottom: 2rem;
 }
+.about__list li:last-child { margin-bottom: 0; }
 .about__list li::before {
   content: "";
   position: absolute; left: 0; top: 1.2rem;
@@ -404,7 +425,9 @@ body {
   background: var(--teal);
 }
 .about__map {
-  flex: none;
+  grid-column: 2;
+  grid-row: 1 / -1;
+  align-self: start;
   width: 61.3rem;
   margin: 2.5rem -2rem 0 0;
 }
@@ -515,7 +538,7 @@ body {
 .area-card__list { margin-bottom: 2.4rem; }
 .area-card__list li {
   position: relative;
-  padding-left: 1.8rem;
+  padding-left: 2.1rem;
   color: var(--text);
   font-size: 1.2rem;
   letter-spacing: .11em;
@@ -523,7 +546,7 @@ body {
 }
 .area-card__list li::before {
   content: "";
-  position: absolute; left: .2rem; top: .8rem;
+  position: absolute; left: .6rem; top: .8rem;
   width: .5rem; height: .5rem; border-radius: 50%;
   background: var(--text);
 }
@@ -974,179 +997,226 @@ body {
    ========================================================= */
 @media screen and (max-width: 767px) {
 
+  /* モバイル専用の改行を有効化 */
+  .sp-only { display: inline; }
+
   /* ---------- 共通見出し ---------- */
-  .sec-title { font-size: 2.9rem; letter-spacing: .08em; margin-top: 1.8rem; }
+  .sec-title { font-size: 2rem; margin-top: 1.8rem; }
+  .sec-label { font-size: .9rem; }
 
   /* ---------- HEADER + ハンバーガーメニュー ---------- */
-  .header__inner { padding: 0 2rem; height: 8rem; }
-  .header__logo img { height: 4.8rem; }
-  .header__cta { display: none; }               /* 上部バーのCTAはメニュー内に集約 */
+  .header__inner { padding: 0 2.6rem 0 1.8rem; height: 8.5rem; }
+  .header__logo img { height: 3rem; }
+  /* 応募ピル：ハンバーガーの左隣にコンパクト表示 */
+  .header__inner .header__cta {
+    display: inline-flex;
+    margin-left: auto;
+    height: 3.3rem;
+    padding: 0 2rem;
+    font-size: 1.1rem;
+    white-space: nowrap;
+  }
 
   /* メニューを開くとヘッダー帯も白に → ロゴ周りとメニューがひと続きの面になる */
   .header.is-open {
     background: #fff;
-    box-shadow: 0 .2rem 1.2rem rgba(0,55,102,.08);
   }
 
   /* ヘッダー下を覆うメニュー（PCと同じ、シンプルなリンク集） */
   .gnav {
     position: fixed;
-    top: 8rem; left: 0; right: 0;
-    height: calc(100dvh - 8rem);
+    top: 8.5rem; left: 0; right: 0;
+    height: calc(100dvh - 8.5rem);
     margin-left: 0;
     background: #fff;
-    padding: 1.4rem 3rem calc(3rem + env(safe-area-inset-bottom));
+    padding: 1rem 2.2rem calc(2.2rem + env(safe-area-inset-bottom));
     overflow-y: auto;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-.8rem);
+    transform: translateY(-0.6rem);
     transition: opacity .25s ease, transform .3s ease, visibility .3s;
   }
   .header.is-open .gnav { opacity: 1; visibility: visible; transform: none; }
 
   .gnav__list { flex-direction: column; gap: 0; }
-  .gnav__list li { border-bottom: .1rem solid rgba(0,55,102,.1); }
+  .gnav__list li { border-bottom: 0.1rem solid rgba(0,55,102,.1); }
   .gnav__list a {
     display: block;
-    padding: 2.2rem .4rem;
+    padding: 1.6rem 0.3rem;
     color: var(--navy);
-    font-size: 1.9rem; letter-spacing: .08em;
+    font-size: 1.4rem; letter-spacing: .08em;
     transition: color .2s ease;
   }
   .gnav__list a:active { color: var(--teal); }
 
-  /* 応募ボタン：PCヘッダーと同じグラデのピル */
-  .gnav__list .gnav__cta-item { display: block; border-bottom: none; margin-top: 3rem; }
-  .gnav__cta-item a {
-    display: flex; align-items: center; justify-content: center;
-    padding: 1.8rem;
-    background: var(--grad-btn); color: #fff;
-    font-weight: bold; letter-spacing: .2em;
-    border-radius: 2rem;
-    box-shadow: 0 .4rem 1rem rgba(30,158,162,.25);
-    text-shadow: 0 0 .3rem rgba(0,0,0,.25);
-  }
-
   /* ハンバーガーボタン */
   .gnav__toggle {
-    display: flex; flex-direction: column; justify-content: center;
-    gap: .6rem;
-    width: 4.6rem; height: 4.6rem; margin-left: auto; padding: 1.1rem;
+    display: flex; flex-direction: column; justify-content: space-between;
+    height: 2.1rem; margin-left: 1.1rem; padding: 0;
     z-index: 60;
   }
   .gnav__toggle span {
-    display: block; width: 2.4rem; height: .3rem;
-    border-radius: 1rem; background: var(--navy);
+    display: block; width: 3.2rem; height: 0.3rem;
+    border-radius: 999rem; background: var(--navy);
     transition: transform .3s ease, opacity .25s ease;
   }
-  .header.is-open .gnav__toggle span:nth-child(1) { transform: translateY(.9rem) rotate(45deg); }
+  /* ×印：上下バーを中央バーの位置(=トグル高2.1rem / space-between)まで動かして交差させる。
+     移動量 0.9rem = 中央バー中心 - 端バー中心（バー高0.3rem・間隔0.6rem に依存）。
+     トグルの高さやバー太さ・間隔を変えたら、この値も見直すこと */
+  .header.is-open .gnav__toggle span:nth-child(1) { transform: translateY(0.9rem) rotate(45deg); }
   .header.is-open .gnav__toggle span:nth-child(2) { opacity: 0; }
-  .header.is-open .gnav__toggle span:nth-child(3) { transform: translateY(-.9rem) rotate(-45deg); }
+  .header.is-open .gnav__toggle span:nth-child(3) { transform: translateY(-0.9rem) rotate(-45deg); }
 
   /* ---------- HERO ---------- */
-  .hero { height: auto; }
-  .hero__inner { padding: 12rem 2.4rem 5rem; }
-  .hero__body { max-width: 100%; }
-  .hero__lead { font-size: 2.5rem; }
-  .hero__title { font-size: 4.5rem; letter-spacing: .04em; margin-top: 1.4rem; }
-  .hero__desc { margin-top: 2.6rem; font-size: 1.9rem; line-height: 1.7; }
-  .hero__desc br { display: none; }
-  .hero__info { margin-top: 2.8rem; }
-  .hero__info-row { flex-wrap: wrap; }
-  .hero__info-row dd,
-  .hero__info-row:nth-child(2) dd { font-size: 1.95rem; letter-spacing: .04em; }
-  .hero__btn { margin-top: 2.8rem; width: 100%; height: 6.2rem; font-size: 2rem; }
-  .hero__badge {
-    position: static; height: auto; width: 30rem; max-width: 72%;
-    margin: 4.4rem auto 0;
+  .hero { height: 100dvh; background: url(../img/nalp22.jpg) no-repeat 63% 75% / 347%; }
+  /* 中央基点で円形に外側へ透明へフェード（中央のテキストを明るく＝可読性確保、外側は写真を見せる） */
+  .hero::before {
+    background: radial-gradient(circle at 50% 30%,
+        rgba(255,255,255) 0%,
+        rgba(255,255,255,0) 70%);
   }
+  .hero__inner { padding: 14.4rem 0 0 2.9rem; }
+  .hero__body { max-width: 100%; }
+  .hero__lead { font-size: 2.4rem; position: relative; filter: drop-shadow(.05rem .05rem .01rem rgba(0, 0, 0, .3)); }
+  .hero__lead-em { font-size: 2.9rem; margin-right: .6rem; }
+  .hero__lead-em,
+  .hero__lead-sub { vertical-align: bottom; }
+  .hero__lead::before {
+    content: "";
+    position: absolute;
+    top: -2.8rem;
+    left: -1.8rem;
+    width: 4rem;
+    height: 4.1rem;
+    background: url(../img/nalp36.svg) no-repeat left top / contain;
+  }
+  .hero__title { font-size: 3.3rem; letter-spacing: .12em; margin-top: .5rem; filter: drop-shadow(.05rem .05rem .01rem rgba(0, 0, 0, .3)); }
+  .hero__desc { margin-top: 2.4rem; font-size: 1.2rem; width: 19.3rem; }
+  .hero__desc br { display: none; }
+  .hero__info { margin-top: 3rem; }
+  .hero__info-row { flex-wrap: wrap; margin-bottom: .7rem; align-items: start; }
+  .hero__info-row:nth-child(2) { margin-bottom: 0; align-items: center; }
+  .hero__info-row dt { width: 6.5rem; padding: .6rem 0; margin-right: 1.1rem; font-size: 1.1rem; }
+  .hero__info-row dd { font-size: 1.4rem; }
+  .hero__info-row:nth-child(2) dd { font-size: 1.6rem; }
+  .hero__info-row:nth-child(2) dd span { font-size: 1.3rem; }
+  .hero__btn { margin-top: 2.2rem; height: 4rem; padding: 0 2.9rem; font-size: 1.3rem; }
+  .hero__badge { top: 24.2rem; right: 1.2rem; width: 14.8rem; height: auto; }
 
   /* ---------- ABOUT ---------- */
-  .about { padding: 8rem 0 7rem; }
-  .about__top { flex-direction: column; padding: 0 2.4rem; }
-  .about__title { font-size: 3.4rem; margin-bottom: 3rem; }
-  .about__title span { font-size: 2.6rem; }
-  .about__text { font-size: 1.9rem; margin-bottom: 2rem; }
-  .about__list { margin-bottom: 2.8rem; }
-  .about__list li { font-size: 1.9rem; margin-bottom: 1.6rem; }
-  .about__map { width: 100%; max-width: 44rem; margin: 3.6rem auto 0; }
-  .about__points { margin-top: 6rem; padding: 0 2.4rem; grid-template-columns: 1fr; gap: 5rem; }
-  .point__head { min-height: auto; }
+  /* モバイルでは背景画像をセクション全体ではなく上から約60%だけに表示する。
+     背景レイヤーは常にパディングボックス全体を塗るため、cover の縦横比を保ったまま
+     高さを 60% に制限するには疑似要素で描画領域を区切る必要がある */
+  .about {
+    padding: 9.3rem 0 8.2rem;
+    background: #ffffff;
+  }
+  .about::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 48%;
+    z-index: 0;
+    background:
+      linear-gradient(to bottom, rgba(255,255,255,0) 60%, rgba(255,255,255) 100%),
+      linear-gradient(rgba(255,255,255,.6), rgba(255,255,255,.6)),
+      url("../img/nalp3.jpg") no-repeat 53% 100% / cover;
+  }
+  /* .about__map の出現アニメ(data-reveal="right"=translateX)がモバイルで右にはみ出し
+     横スクロールを生むため、ここでクリップ。root(html)に overflow-x を付けると初回縦スクロールが
+     空振りするので、root ではないこの要素で clip する（clip はスクロールコンテナを作らない） */
+  .about__top { flex-direction: column; padding: 0 3.6rem; overflow-x: clip; }
+  /* map を lead 内に入れたので、モバイルはグリッド解除して DOM 順
+     (title → map → text …) のまま 1 カラムで縦積みにする */
+  .about__lead { display: block; }
+  .about__title { font-size: 3.3rem; margin-bottom: 3.8rem; white-space: nowrap; }
+  .about__title span { font-size: 2.8rem; margin-bottom: .3rem; }
+  .about__text { font-size: 1.3rem; margin-bottom: 1.6rem; padding: 0 .6rem; }
+  .about__text:first-of-type { margin-bottom: 2.8rem; }
+  .about__list { margin-bottom: 2.9rem; padding: 0 .6rem; }
+  .about__list li { font-size: 1.3rem; padding-left: 1.3rem; margin-bottom: 1.3rem; }
+  .about__list li::before { width: .5rem; height: .5rem; top: .7rem; }
+  .about__map { width: 100%; margin: 0 auto 4.4rem; padding: 0 .6rem; }
+  .about__points { margin-top: 4.4rem; padding: 0 2.8rem; grid-template-columns: 1fr; gap: 2.1rem; }
+  .point { padding: 1.7rem 1.5rem; background: #fff; border-radius: 1rem; box-shadow: 0 0.2rem 1.5rem rgba(0,0,0,.2); }
+  .point__head { gap: 2rem; margin-bottom: 0; }
+  .point__num { font-size: 5.2rem; }
+  .point__title { font-size: 1.9rem; }
+  .point__img { margin: 0 2.1rem; aspect-ratio: 252 / 147; }
+  .point__text { margin: 2rem 2.2rem 0; font-size: 1.3rem; }
 
   /* ---------- AREA（カルーセル） ---------- */
-  .area { padding: 6rem 0; }
-  .area-card { flex: 0 0 74vw; }
-  .area-card__body { padding: 3rem 2.4rem 2.6rem; }
-  .area-card__lead,
-  .area-card__list li { font-size: 1.4rem; }
-  .area-card__link { font-size: 1.5rem; }
-  .area__arrow { top: 32rem; width: 4.4rem; height: 4.4rem; }
-  .area__arrow--prev { left: 3.4rem; }
-  .area__arrow--next { right: 3.4rem; }
+  .area { padding: 4rem 0 9.1rem; }
+  .area__track { gap: 2.3rem; }
+  .area-card { flex: 0 0 25.9rem; }
+  .area-card__img { aspect-ratio: 259 / 195; }
+  .area-card__body { padding: 1.9rem 2.1rem 2.2rem; }
+  .area-card__title { font-size: 2.6rem; }
+  .area-card__lead { font-size: 1.2rem; margin-top: 1.9rem; }
+  .area-card__list { margin-bottom: 2.3rem; }
+  .area-card__list li { font-size: 1.2rem; }
+  .area-card__link { font-size: 1.3rem; }
+  .area__arrow { top: 20.4rem; width: 4rem; height: 4rem; }
+  .area__arrow--prev { left: 3rem; }
+  .area__arrow--next { right: 3rem; }
 
   /* ---------- CONTENTS ---------- */
-  .contents { padding: 6rem 2.4rem 5rem; }
+  .contents { padding: 5.6rem 4rem 6.4rem; }
   .contents__list {
-    margin-top: 4.6rem;
+    margin-top: 4.7rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 4.4rem 2rem;
+    gap: 3.3rem 0;
   }
-  .contents__icon { height: 8.6rem; margin-bottom: 2rem; }
-  .contents__icon img { height: 8.6rem; }
-  .contents__name { font-size: 2rem; margin-bottom: 1rem; }
-  .contents__desc { font-size: 1.4rem; }
+  .contents__icon { height: 8.4rem; margin-bottom: 2.1rem; }
+  .contents__icon img { height: 8.4rem; }
+  .contents__name { font-size: 1.5rem; margin-bottom: 1rem; }
+  .contents__desc { font-size: .9rem; }
 
   /* 募集要項バナー */
-  .banner { margin: 6rem 0 0; min-height: auto; border-radius: 1.8rem; }
-  .banner__bg img { transform: scale(1.2); object-position: center; }
-  .banner__body { position: relative; width: 100%; padding: 4.4rem 2.4rem; text-align: center; }
-  .banner__body::before { inset: 0; }
-  .banner__title { justify-content: center; font-size: 2.9rem; letter-spacing: .1em; }
-  .banner__icon { width: 2.8rem; margin-right: 1.2rem; }
-  .banner__text { margin: 1.8rem auto 2.4rem; font-size: 1.7rem; text-align: center; }
-  .banner__btn { margin: 0 auto; width: 24rem; }
+  .banner { margin: 4.4rem 0 0; min-height: 16.6rem; border-radius: 2.4rem; }
+  .banner__bg img { transform: scale(1.5); object-position: 30% -35%; transform-origin: 30% 15%; }
+  .banner__body { width: 100%; padding: 4.4rem 0 1.6rem; text-align: center; }
+  .banner__title { justify-content: center; font-size: 2.1rem; }
+  .banner__icon { display: none; }
+  .banner__text { margin: 1.4rem auto; font-size: 1.1rem; text-align: center; }
+  .banner__btn { margin: 0 auto; width: 11.6rem; height: 2.6rem; padding: 0 .6rem 0 2.8rem; font-size: .9rem; border-radius: 999rem !important; }
 
   /* ---------- FOR YOU ---------- */
-  .foryou { padding: 6rem 2.4rem 7rem; }
-  .foryou__list { margin-top: 4.6rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .foryou { padding: 5.6rem 2.3rem 4.7rem; }
+  .foryou__list { margin-top: 3.1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
   .foryou__card { display: flex; }
   .foryou__img { width: 100%; }
-  .foryou__body { left: 9%; right: 6%; bottom: 9%; }
-  .foryou__title { font-size: 1.7rem; margin-bottom: 1rem; }
-  .foryou__text { font-size: 1.3rem; line-height: 1.5; }
+  .foryou__body { left: 1.6rem; bottom: 2.2rem; }
+  .foryou__title { font-size: .9rem; margin-bottom: .9rem; }
+  .foryou__text { font-size: .7rem; }
 
   /* ---------- LET'S JOIN ---------- */
-  .join { padding: 7rem 0 8rem; }
-  .join__head { padding-left: 3rem; }
-  .join__script { font-size: 3.2rem; }
-  .join__title { font-size: 3rem; letter-spacing: .06em; }
+  .join { padding: 7.7rem 0 9rem; }
+  .join__head { padding-left: 2.7rem; }
+  .join__script { font-size: 2.2rem; }
+  .join__title { font-size: 2.5rem; }
 
   /* PC同様の“ちらし”配置：絶対配置で2列に固定（マルチカラムのブラウザ差／Safari不具合を回避） */
   .join__gallery {
-    position: relative;   /* 子要素の絶対配置の基準／波イラストより前面に */
-    z-index: 2;
-    width: 100%; height: 162vw;
-    margin-top: 4rem;
+    width: 100%; height: 47.7rem;
+    margin-top: 3.2rem;
     padding: 0;
   }
   .join__photo {
     position: absolute !important;
-    width: 43vw !important;
-    height: auto !important;
     margin: 0;
-    padding: .8rem;
+    padding: .9rem;
   }
-  .join__photo img { width: 100%; height: auto; }
   /* 左列＝p1〜p4 ／ 右列＝p5〜p8。実寸比率のまま段違いに並べ、写真ごとに傾き */
-  .join__photo.p1 { top: 0;     left: 6%;  transform: rotate(-5deg)   !important; }
-  .join__photo.p2 { top: 37vw;  left: 6%;  transform: rotate(4.5deg)  !important; }
-  .join__photo.p3 { top: 74vw;  left: 6%;  transform: rotate(-3.5deg) !important; }
-  .join__photo.p4 { top: 111vw; left: 6%;  transform: rotate(5deg)    !important; }
-  .join__photo.p5 { top: 0;     left: 51%; transform: rotate(3.5deg)  !important; }
-  .join__photo.p6 { top: 51vw;  left: 51%; transform: rotate(-5.5deg) !important; }
-  .join__photo.p7 { top: 91vw;  left: 51%; transform: rotate(3deg)    !important; }
-  .join__photo.p8 { top: 128vw; left: 51%; transform: rotate(-4deg)   !important; }
+  .join__photo.p1 { top: 0;     left: 1.6rem;  transform: rotate(9.1deg)   !important; width: 18rem !important; height: 12.3rem !important; }
+  .join__photo.p2 { top: 2rem;  left: 19.4rem;  transform: rotate(-6.2deg)  !important; width: 15.7rem !important; height: 10.7rem !important; }
+  .join__photo.p3 { top: 24.4rem;  left: 3rem;  transform: rotate(9.1deg) !important; width: 15.7rem !important; height: 10.8rem !important; z-index: 4; }
+  .join__photo.p4 { top: 25rem; left: 19.4rem;  transform: rotate(-8.7deg)    !important; width: 15.1rem !important; height: 10.3rem !important; z-index: 5; }
+  .join__photo.p5 { top: 12.3rem;  left: 3rem;  transform: rotate(-6.2deg)  !important; width: 15.7rem !important; height: 11.9rem !important; z-index: 3; }
+  .join__photo.p6 { top: 13.3rem;  left: 20.1rem; transform: rotate(8deg) !important; width: 14rem !important; height: 9.6rem !important; }
+  .join__photo.p7 { top: 36.2rem;  left: 1.9rem; transform: rotate(-2.6deg)    !important; width: 16.5rem !important; height: 10.5rem !important; z-index: 4; }
+  .join__photo.p8 { top: 36.9rem; left: 20.1rem; transform: rotate(-2.6deg)   !important; width: 16.5rem !important; height: 10.5rem !important; z-index: 4; }
   /* 出現アニメの順番：上から左右交互（p1→p5→p2→p6→p3→p7→p4→p8）に上書き。
      ※既定の nth-child 遅延（DOM順＝左列先→右列）をモバイルのみ差し替え */
   .js .join__gallery.is-in > .p1 { transition-delay: .05s; }
@@ -1159,34 +1229,47 @@ body {
   .js .join__gallery.is-in > .p8 { transition-delay: .47s; }
 
   /* 装飾（魚・泡）も小さく添えてPCの遊び心を再現 */
-  .join__deco { display: block; }
-  .join__deco--fish   { top: 6rem; right: 12rem; width: 14rem; opacity: .8; }
-  .join__deco--bubble { top: 3rem; right: -7rem; width: 18rem; opacity: .55; }
+  .join__deco--fish   { top: 2.9rem; right: 8.8rem; width: 15.4rem; }
+  .join__deco--bubble { top: 1.8rem; right: -8.1rem; width: 16.1rem; }
+
+  .join::after { background: url(../img/nalp6.jpg) no-repeat 10% bottom / cover; transform: scale(1.2); }
 
   /* ---------- VOICE ---------- */
-  .voice { padding: 6rem 2.4rem 4rem; margin-bottom: 6rem; }
-  .voice__desc { margin: 3rem 0 4rem; font-size: 1.6rem; line-height: 1.7; }
-  .voice__list { display: grid; grid-template-columns: 1fr; gap: 3rem; }
-  .voice-card { flex-direction: column; gap: 2rem; padding: 2.6rem; border-radius: 2.4rem; }
-  .voice-card__img { width: 100%; height: 24rem; }
-  .voice-card__title { font-size: 2.1rem; margin: .4rem 0 1.8rem; }
-  .voice-card__text { font-size: 1.6rem; margin-bottom: 2rem; line-height: 1.8; }
+  .voice { padding: 4.453rem 1.781rem 2.969rem; margin-bottom: 4.453rem; }
+  .voice__desc { margin: 2.227rem 0 2.969rem; font-size: 1.188rem; line-height: 1.7; }
+  .voice__list { display: grid; grid-template-columns: 1fr; gap: 2.227rem; }
+  .voice-card { flex-direction: column; gap: 1.484rem; padding: 1.93rem; border-radius: 1.781rem; }
+  .voice-card__img { width: 100%; height: 17.812rem; }
+  .voice-card__title { font-size: 1.559rem; margin: 0.297rem 0 1.336rem; }
+  .voice-card__text { font-size: 1.188rem; margin-bottom: 1.484rem; line-height: 1.8; }
   .voice-card__title br, .voice-card__text br { display: none; }
-  .voice-card__profile { padding: 2rem 2.4rem; }
+  .voice-card__profile { padding: 1.484rem 1.781rem; }
 
   /* ---------- ENTRY ---------- */
-  .entry { padding: 6rem 2.4rem 5rem; }
-  .entry__desc { margin-top: 2rem; }
-  .entry__list { margin-top: 4rem; display: grid; grid-template-columns: 1fr; gap: 2.4rem; }
+  .entry { padding: 4.453rem 1.781rem 3.711rem; }
+  .entry__desc { margin-top: 1.484rem; }
+  .entry__list { margin-top: 2.969rem; display: grid; grid-template-columns: 1fr; gap: 1.781rem; }
   .entry-card { width: 100%; }
-  .entry-card__body { padding: 4.2rem 2.4rem 4.6rem; }
-  .entry-card__title { font-size: 3rem; }
-  .entry-card__text { font-size: 1.8rem; margin: 2.4rem 0 3rem; }
-  .entry-card__btn { width: 24rem; }
+  .entry-card__body { padding: 3.117rem 1.781rem 3.414rem; }
+  .entry-card__title { font-size: 2.227rem; }
+  .entry-card__text { font-size: 1.336rem; margin: 1.781rem 0 2.227rem; }
+  .entry-card__btn { width: 17.812rem; }
 
   /* ---------- FOOTER ---------- */
-  .footer { padding-top: 5rem; }
-  .footer__inner { flex-direction: column; align-items: center; text-align: center; gap: 2rem; }
-  .footer__info { flex-direction: column; align-items: center; margin-top: 0; gap: 1.2rem; }
-  .footer__host, .footer__manage { font-size: 1.7rem; }
+  .footer { padding-top: 3.711rem; }
+  .footer__inner { flex-direction: column; align-items: center; text-align: center; gap: 1.484rem; }
+  .footer__info { flex-direction: column; align-items: center; margin-top: 0; gap: 0.891rem; }
+  .footer__host, .footer__manage { font-size: 1.262rem; }
+
+  /* ---------- leak補正: グローバル指定(1366基準)をモバイルで380基準へ換算 ---------- */
+  body { font-size: 1.2rem; }
+  .btn-pill { border-radius: 1rem; box-shadow: 0 .3rem .7rem rgba(30,158,162,.25); text-shadow: 0 0 .2rem rgba(0,0,0,.25); }
+  .btn-gradient { border-radius: 1rem; box-shadow: 0 .4rem 1rem rgba(30,158,162,.28); text-shadow: 0 0 .3rem rgba(0,0,0,.28); }
+  .btn-gradient:hover, .btn-pill:hover { transform: translateY(-0.1rem); box-shadow: 0 0.6rem 1.3rem rgba(30,158,162,.35); }
+  .arrow-circle { font-size: 1rem; }
+  .voice-card__meta { font-size: 1.2rem; }
+  .voice-card__name { font-size: 1.4rem; margin-top: 1rem; }
+  .voice-card__name span { font-size: 1rem; }
+  .entry-card__icon { width: 2.4rem; margin-bottom: 2.2rem; }
+  .footer__logo img { height: 4.4rem; }
 }
