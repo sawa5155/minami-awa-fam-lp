@@ -515,7 +515,6 @@ body {
 .area-card__img { 
   aspect-ratio: 293 / 204;
   overflow: hidden;
-  border-radius: 0 0 2rem 2rem;
 }
 .area-card__img img { width: 100%; height: 100%; object-fit: cover; }
 .area-card__body {
