@@ -582,7 +582,11 @@ body {
 
 .area-modal {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -618,6 +622,7 @@ body {
 }
 .area-modal__scroll {
   max-height: calc(100vh - 8rem);
+  max-height: calc(100dvh - 8rem);
   overflow-y: auto;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
@@ -1345,7 +1350,7 @@ body {
   /* ---------- AREA MODAL (SP) ---------- */
   .area-modal { padding: 2rem 1.6rem; }
   .area-modal__dialog { border-radius: 1.8rem; }
-  .area-modal__scroll { max-height: calc(100vh - 4rem); }
+  .area-modal__scroll { max-height: calc(100vh - 4rem); max-height: calc(100dvh - 4rem); }
   .area-modal__img { aspect-ratio: 343 / 200; border-radius: 1.8rem 1.8rem 0 0; }
   .area-modal__body { padding: 2.4rem 2.2rem 3rem; }
   .area-modal__close { top: 1.2rem; right: 1.2rem; width: 3.6rem; height: 3.6rem; }
