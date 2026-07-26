@@ -1251,7 +1251,7 @@ body {
 
   /* ---------- ENTRY ---------- */
   .entry { padding: 4.453rem 1.781rem 3.711rem; }
-  .entry__desc { margin-top: 1.484rem; }
+  .entry__desc { font-size: 1.1rem; margin-top: 1.8rem; }
   .entry__list { margin-top: 2.969rem; display: grid; grid-template-columns: 1fr; gap: 1.781rem; }
   .entry-card { width: 100%; }
   .entry-card__body { padding: 3.117rem 1.781rem 3.414rem; }
