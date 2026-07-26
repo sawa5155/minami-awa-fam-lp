@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Jost:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@500;600;700&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260726c">
-<script src="js/main.js?v=20260722c" defer></script>
+<link rel="stylesheet" href="css/style.css?v=20260726g">
+<script src="js/main.js?v=20260726d" defer></script>
 </head>
 <body>
 
@@ -122,7 +122,7 @@
             <li>アウトドア好きに人気</li>
             <li>地域との距離が近い</li>
           </ul>
-          <a href="https://tripseed.jp/" class="area-card__link" target="_blank" rel="noopener noreferrer">詳しく見る →</a>
+          <button type="button" class="area-card__link" data-area="naka">詳しく見る →</button>
         </div>
       </li>
       <li class="area-card">
@@ -136,7 +136,7 @@
             <li>徳島市へのアクセスも良好</li>
             <li>海辺の暮らしも楽しめる</li>
           </ul>
-          <a href="https://tripseed.jp/" class="area-card__link" target="_blank" rel="noopener noreferrer">詳しく見る →</a>
+          <button type="button" class="area-card__link" data-area="anan">詳しく見る →</button>
         </div>
       </li>
       <li class="area-card">
@@ -150,7 +150,7 @@
             <li>歴史ある町並み</li>
             <li>医療・教育環境も充実</li>
           </ul>
-          <a href="https://tripseed.jp/" class="area-card__link" target="_blank" rel="noopener noreferrer">詳しく見る →</a>
+          <button type="button" class="area-card__link" data-area="minami">詳しく見る →</button>
         </div>
       </li>
       <li class="area-card">
@@ -164,7 +164,7 @@
             <li>コンパクトで暮らしやすい</li>
             <li>地域コミュニティが活発</li>
           </ul>
-          <a href="https://tripseed.jp/" class="area-card__link" target="_blank" rel="noopener noreferrer">詳しく見る →</a>
+          <button type="button" class="area-card__link" data-area="mugi">詳しく見る →</button>
         </div>
       </li>
       <li class="area-card">
@@ -178,7 +178,7 @@
             <li>DMV運行エリア</li>
             <li>若い移住者も増加中</li>
           </ul>
-          <a href="https://tripseed.jp/" class="area-card__link" target="_blank" rel="noopener noreferrer">詳しく見る →</a>
+          <button type="button" class="area-card__link" data-area="kaiyo">詳しく見る →</button>
         </div>
       </li>
     </ul>
@@ -357,6 +357,23 @@
     </div>
   </footer>
 </section>
+
+<!-- ===================== AREA MODAL ===================== -->
+<div class="area-modal" id="areaModal" aria-hidden="true">
+  <div class="area-modal__backdrop" data-modal-close></div>
+  <div class="area-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="areaModalTitle">
+    <button type="button" class="area-modal__close" data-modal-close aria-label="閉じる"></button>
+    <div class="area-modal__scroll">
+      <div class="area-modal__img"><img id="areaModalImg" src="" alt=""></div>
+      <div class="area-modal__body">
+        <h3 class="area-modal__title" id="areaModalTitle"></h3>
+        <div class="area-modal__lead" id="areaModalLead"></div>
+        <ul class="area-modal__list" id="areaModalList"></ul>
+        <dl class="area-modal__data" id="areaModalData"></dl>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
