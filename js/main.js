@@ -472,3 +472,28 @@
     if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
   });
 })();
+
+/* ---------------------------------------------------------
+   4) スクロールでヘッダーに白背景を付与
+   - 少しでも下にスクロールしたら .is-scrolled を付ける
+--------------------------------------------------------- */
+(function () {
+  var header = document.querySelector('.header');
+  if (!header) return;
+
+  var THRESHOLD = 40;
+  var ticking = false;
+
+  function update() {
+    ticking = false;
+    header.classList.toggle('is-scrolled', window.pageYOffset > THRESHOLD);
+  }
+
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }, { passive: true });
+
+  update();
+})();

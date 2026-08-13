@@ -214,7 +214,23 @@ body {
   top: 0; left: 0;
   width: 100%;
   z-index: 50;
+  background-color: rgba(255, 255, 255, 0);
+  /* ふわっと滲むようにゆっくり立ち上げる */
+  transition: background-color .9s cubic-bezier(.22, .61, .36, 1);
 }
+/* 出現アニメ用の `.js [data-reveal]` が transition を丸ごと上書きし、
+   background-color がリストから外れて「即白」になるのを防ぐ。
+   opacity / transform は元の指定をそのまま引き継ぐ */
+@media (prefers-reduced-motion: no-preference) {
+  .js .header[data-reveal] {
+    transition:
+      background-color .9s cubic-bezier(.22, .61, .36, 1),
+      opacity .9s ease,
+      transform .9s cubic-bezier(.22, .61, .36, 1);
+  }
+}
+/* スクロールしたら白背景に */
+.header.is-scrolled { background-color: rgba(255, 255, 255, 1); }
 .header__inner {
   display: flex;
   align-items: center;
@@ -1011,8 +1027,11 @@ body {
 .voice__list {
   display: flex;
   justify-content: space-between;
+  gap: 3rem;
 }
 .voice-card {
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   gap: 2.8rem;
   background: #fff;
@@ -1027,11 +1046,22 @@ body {
   border-radius: 2.3rem;
   overflow: hidden;
 }
-.voice-card__img img { width: 100%; height: 100%; object-fit: cover; }
-.voice-card__body { flex: 1; }
+.voice-card__img img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+  transform: scale(var(--zoom, 1));
+  transform-origin: var(--focus, 50% 50%);
+}
+/* 写真ごとの見え方の調整
+   --focus : 見せたい位置（左右 上下）。0%=左/上、100%=右/下
+             ※PCは元写真が横長で高さが余らないため、上下は --zoom を 1 より大きくして初めて効く
+   --zoom  : 拡大率。1=等倍、1.3=3割アップ（--focus の位置を軸に寄る） */
+.voice-card:nth-child(1) .voice-card__img img { --focus: 54% 100%; --zoom: 1.3; }
+.voice-card:nth-child(2) .voice-card__img img { --focus: 31% 50%; --zoom: 1; }
+.voice-card__body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .voice-card__title {
   color: #21568d;
-  font-size: 2.1rem;
+  font-size: 1.8rem;
   font-weight: bold;
   letter-spacing: .15em;
   margin-top: 1.2rem;
@@ -1045,6 +1075,7 @@ body {
   margin-bottom: 3.1rem;
 }
 .voice-card__profile {
+  margin-top: auto;
   background: #f2fcff;
   border-radius: 3.6rem;
   padding: 2.2rem 3.1rem;
@@ -1203,8 +1234,16 @@ body {
   }
 
   /* メニューを開くとヘッダー帯も白に → ロゴ周りとメニューがひと続きの面になる */
+  /* メニュー開閉はゆっくり待たせず、メニュー本体と同じ速さで切り替える */
   .header.is-open {
-    background: #fff;
+    background-color: #fff;
+  }
+  /* 上の .js .header[data-reveal] より詳細度を上げて速度だけ差し替える */
+  .js .header.is-open[data-reveal] {
+    transition:
+      background-color .2s ease,
+      opacity .9s ease,
+      transform .9s cubic-bezier(.22, .61, .36, 1);
   }
 
   /* ヘッダー下を覆うメニュー（PCと同じ、シンプルなリンク集） */
@@ -1441,10 +1480,12 @@ body {
   .voice__list { display: grid; grid-template-columns: 1fr; gap: 2.227rem; }
   .voice-card { flex-direction: column; gap: 1.484rem; padding: 1.93rem; border-radius: 1.781rem; }
   .voice-card__img { width: 100%; height: 17.812rem; }
+  /* SPは横長に切り抜かれるため上下が効く */
+  .voice-card:nth-child(1) .voice-card__img img { --focus: 60% 76%; --zoom: 1.5; }
+  .voice-card:nth-child(2) .voice-card__img img { --focus: 50% 38%; --zoom: 1; }
   .voice-card__title { font-size: 1.559rem; margin: 0.297rem 0 1.336rem; }
   .voice-card__text { font-size: 1.188rem; margin-bottom: 1.484rem; line-height: 1.8; }
-  .voice-card__title br, .voice-card__text br { display: none; }
-  .voice-card__profile { padding: 1.484rem 1.781rem; }
+  .voice-card__profile { padding: 1.484rem 1.781rem; border-radius: 2.6rem; }
 
   /* ---------- ENTRY ---------- */
   .entry { padding: 4.453rem 1.781rem 3.711rem; }
