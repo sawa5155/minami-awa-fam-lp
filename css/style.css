@@ -234,8 +234,8 @@ body {
 .header__inner {
   display: flex;
   align-items: center;
-  height: 17.3rem;
-  padding: 0 3.5rem 0 6.7rem;
+  /* 上はデザイン当初の余白のまま、下だけ詰める */
+  padding: 5.7rem 3.5rem 4.1rem 6.7rem;
 }
 .header__logo img { height: 5.9rem; width: auto; }
 .gnav { margin-left: auto; }
@@ -1221,7 +1221,7 @@ body {
   .sec-label { font-size: .9rem; }
 
   /* ---------- HEADER + ハンバーガーメニュー ---------- */
-  .header__inner { padding: 0 2.6rem 0 1.8rem; height: 8.5rem; }
+  .header__inner { padding: 2.6rem 2.6rem 2.3rem 1.8rem; height: auto; }
   .header__logo img { height: 3rem; }
   /* 応募ピル：ハンバーガーの左隣にコンパクト表示 */
   .header__inner .header__cta {
@@ -1249,8 +1249,8 @@ body {
   /* ヘッダー下を覆うメニュー（PCと同じ、シンプルなリンク集） */
   .gnav {
     position: fixed;
-    top: 8.5rem; left: 0; right: 0;
-    height: calc(100dvh - 8.5rem);
+    top: 8.2rem; left: 0; right: 0;
+    height: calc(100dvh - 8.2rem);
     margin-left: 0;
     background: #fff;
     padding: 1rem 2.2rem calc(2.2rem + env(safe-area-inset-bottom));
