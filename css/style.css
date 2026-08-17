@@ -890,6 +890,11 @@ body {
   border-radius: 2rem;
   justify-content: space-between;
 }
+/* バナーのどこにホバーしてもボタンが反応するように（ENTRYカードと同じ挙動） */
+.banner:hover .banner__btn {
+  transform: translateY(-.2rem);
+  box-shadow: 0 .8rem 1.8rem rgba(30,158,162,.35);
+}
 
 /* =========================================================
    FOR YOU  こんな方におすすめ
@@ -1126,12 +1131,15 @@ body {
   display: flex;
   justify-content: space-between;
 }
+/* li はレイアウト用のラッパー。リンクは .entry-card（カード全体）に付与 */
+.entry__item { display: flex; }
 .entry-card {
   position: relative;
   border-radius: 2.4rem;
   overflow: hidden;
   display: flex;
   width: 56.7rem;
+  color: inherit;
 }
 .entry-card__bg { position: absolute; inset: 0; }
 .entry-card__bg img { width: 100%; height: 100%; object-fit: cover; opacity: .51; }
@@ -1176,6 +1184,11 @@ body {
   justify-content: space-between;
 }
 .entry-form__btn { padding-left: 4.5rem; }
+/* カードのどこにホバーしてもボタンが反応するように */
+.entry-card:hover .entry-card__btn {
+  transform: translateY(-.2rem);
+  box-shadow: 0 .8rem 1.8rem rgba(30,158,162,.35);
+}
 
 /* =========================================================
    FOOTER
@@ -1186,26 +1199,31 @@ body {
 }
 .footer__inner {
   display: flex;
+  flex-wrap: nowrap;
   gap: 6.9rem;
 }
+.footer__logo { flex: none; }
 .footer__logo img { height: 5.9rem; width: auto; }
 .footer__info {
   display: flex;
+  flex-wrap: nowrap;
   margin-top: 1.8rem;
   gap: 4.1rem;
 }
 .footer__host {
   color: var(--text);
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 1.8rem;
   letter-spacing: .15em;
+  white-space: nowrap;
 }
 .footer__manage {
   color: var(--text);
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 1.8rem;
   letter-spacing: .15em;
 }
+.footer__manage p { white-space: nowrap; }
 
 /* =========================================================
    レスポンシブ微調整（縦積み）
@@ -1420,7 +1438,8 @@ body {
   .banner__title { justify-content: center; font-size: 2.1rem; }
   .banner__icon { display: none; }
   .banner__text { margin: 1.4rem auto; font-size: 1.1rem; text-align: center; }
-  .banner__btn { margin: 0 auto; width: 11.6rem; height: 2.6rem; padding: 0 .6rem 0 2.8rem; font-size: .9rem; border-radius: 999rem !important; }
+  .banner__btn { margin: 0 auto; width: 18rem; height: 4.2rem; padding: 0 1.2rem 0 3.6rem; font-size: 1.4rem; border-radius: 999rem !important; }
+  .banner__btn .arrow-circle { font-size: 1.5rem; }
 
   /* ---------- FOR YOU ---------- */
   .foryou { padding: 5.6rem 2.3rem 4.7rem; }
@@ -1491,18 +1510,22 @@ body {
   .entry { padding: 4.453rem 1.781rem 3.711rem; }
   .entry__desc { font-size: 1.1rem; margin-top: 1.8rem; }
   .entry__list { margin-top: 2.969rem; display: grid; grid-template-columns: 1fr; gap: 1.781rem; }
+  .entry__item { width: 100%; }
   .entry-card { width: 100%; }
   .entry-card__body { padding: 3.117rem 1.781rem 3.414rem; }
   .entry-card__title { font-size: 2.227rem; }
   .entry-card__text { font-size: 1.336rem; margin: 1.781rem 0 2.227rem; }
-  .entry-card__btn { width: 11.6rem; height: 2.6rem; padding: 0 .6rem 0 2.8rem; font-size: .9rem; border-radius: 999rem !important; }
-  .entry-form__btn { padding-left: 2.3rem; }
+  .entry-card__btn { width: 18rem; height: 4.2rem; padding: 0 1.2rem 0 3.6rem; font-size: 1.4rem; border-radius: 999rem !important; }
+  .entry-form__btn { padding-left: 3rem; }
+  .entry-card__btn .arrow-circle { font-size: 1.5rem; }
 
   /* ---------- FOOTER ---------- */
   .footer { padding-top: 3.711rem; }
   .footer__inner { flex-direction: column; align-items: center; text-align: center; gap: 1.484rem; }
   .footer__info { flex-direction: column; align-items: center; margin-top: 0; gap: 0.891rem; }
   .footer__host, .footer__manage { font-size: 1.262rem; }
+  /* SPは縦積みなので折り返し許可（PCのみ1行維持） */
+  .footer__host, .footer__manage p { white-space: normal; }
 
   /* ---------- leak補正: グローバル指定(1366基準)をモバイルで380基準へ換算 ---------- */
   body { font-size: 1.2rem; }

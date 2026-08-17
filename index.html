@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Jost:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@500;600;700&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260815">
+<link rel="stylesheet" href="css/style.css?v=20260818">
 <script src="js/main.js?v=20260815" defer></script>
 </head>
 <body>
@@ -30,7 +30,7 @@
         <li><a href="#entry">ツアー内容</a></li>
       </ul>
     </nav>
-    <a href="https://tripseed.jp/" class="btn-pill header__cta" target="_blank" rel="noopener noreferrer">応募はこちら</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdolRQNS_1Y_PhTB12yGdMFgdQUiEk6pMX7aPU2k1rUPkEcDg/viewform" class="btn-pill header__cta" target="_blank" rel="noopener noreferrer">応募はこちら</a>
     <button class="gnav__toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="gnav">
       <span></span><span></span><span></span>
     </button>
@@ -56,7 +56,7 @@
         </div>
       </dl>
 
-      <a href="https://tripseed.jp/" class="btn-gradient hero__btn" target="_blank" rel="noopener noreferrer">ファムツアーに応募する&nbsp;→</a>
+      <a href="https://tripseed.jp/" class="btn-gradient hero__btn" target="_blank" rel="noopener noreferrer">募集要項を見る&nbsp;→</a>
     </div>
 
     <div class="hero__badge" data-reveal="zoom">
@@ -160,7 +160,7 @@
           <p class="area-card__lead">海と共に暮らしたい人へ。</p>
           <ul class="area-card__list">
             <li>ウミガメが産卵する大浜海岸</li>
-            <li>サーフィンや釣りが身近</li>
+            <li>マリンスポーツや釣りが身近</li>
             <li>歴史ある町並み</li>
             <li>医療・教育環境も充実</li>
           </ul>
@@ -322,23 +322,27 @@
   <p class="entry__desc" data-reveal="up">たくさんのご応募お待ちしております！</p>
 
   <ul class="entry__list" data-reveal-group>
-    <li class="entry-card">
-      <div class="entry-card__bg"><img src="img/nalp14.jpeg" alt=""></div>
-      <div class="entry-card__body">
-        <img class="entry-card__icon" src="img/nalp32.png" alt="">
-        <h3 class="entry-card__title">募集要項を見る</h3>
-        <p class="entry-card__text">ツアー概要・スケジュールなど、<br>詳しい情報はこちらから。</p>
-        <a href="https://tripseed.jp/" class="btn-gradient entry-card__btn" target="_blank" rel="noopener noreferrer">詳しく見る<span class="arrow-circle">＞</span></a>
-      </div>
+    <li class="entry__item">
+      <a href="https://tripseed.jp/" class="entry-card" target="_blank" rel="noopener noreferrer">
+        <div class="entry-card__bg"><img src="img/nalp14.jpeg" alt=""></div>
+        <div class="entry-card__body">
+          <img class="entry-card__icon" src="img/nalp32.png" alt="">
+          <h3 class="entry-card__title">募集要項を見る</h3>
+          <p class="entry-card__text">ツアー概要・スケジュールなど、<br>詳しい情報はこちらから。</p>
+          <span class="btn-gradient entry-card__btn">詳しく見る<span class="arrow-circle">＞</span></span>
+        </div>
+      </a>
     </li>
-    <li class="entry-card">
-      <div class="entry-card__bg"><img src="img/nalp10.jpg" alt=""></div>
-      <div class="entry-card__body">
-        <img class="entry-card__icon" src="img/nalp32.png" alt="">
-        <h3 class="entry-card__title">応募はこちら</h3>
-        <p class="entry-card__text">ツアーへの参加をご希望の方は<br>応募フォームへお進みください。</p>
-        <a href="https://tripseed.jp/" class="btn-gradient entry-card__btn entry-form__btn" target="_blank" rel="noopener noreferrer">応募フォーム<span class="arrow-circle">＞</span></a>
-      </div>
+    <li class="entry__item">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdolRQNS_1Y_PhTB12yGdMFgdQUiEk6pMX7aPU2k1rUPkEcDg/viewform" class="entry-card" target="_blank" rel="noopener noreferrer">
+        <div class="entry-card__bg"><img src="img/nalp10.jpg" alt=""></div>
+        <div class="entry-card__body">
+          <img class="entry-card__icon" src="img/nalp32.png" alt="">
+          <h3 class="entry-card__title">応募はこちら</h3>
+          <p class="entry-card__text">ツアーへの参加をご希望の方は<br>応募フォームへお進みください。</p>
+          <span class="btn-gradient entry-card__btn entry-form__btn">応募フォーム<span class="arrow-circle">＞</span></span>
+        </div>
+      </a>
     </li>
   </ul>
 
@@ -347,7 +351,7 @@
     <div class="footer__inner" data-reveal="up">
       <a href="#" class="footer__logo"><img src="img/nalp8.svg" alt="みなみ阿波"></a>
       <div class="footer__info">
-        <p class="footer__host">主催：一般社団法人みなみ阿波観光局</p>
+        <p class="footer__host">主催：一般社団法人みなみ阿波若者創生協議会</p>
         <div class="footer__manage">
           <p>企画・運営：株式会社トリップシード</p>
           <p>TEL：090-6118-2008</p>
